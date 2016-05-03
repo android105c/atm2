@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.list) ListView list;
 
-    private boolean logon = false;
+    private static boolean logon = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (!logon){
             startActivityForResult(new Intent(this, LoginActivity.class), FUNC_LOGIN);
+
         }
         String[] data = {"餘額查詢", "交易明細", "最新消息", "投資理財", "離開"};
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, data);
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode){
             case FUNC_LOGIN:
                 if (resultCode == RESULT_OK){
-
+                    logon=true;
                 }else{
                     finish();
                 }

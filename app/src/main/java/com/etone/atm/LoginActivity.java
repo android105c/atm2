@@ -27,15 +27,13 @@ public class LoginActivity extends AppCompatActivity {
     private boolean remember_userid;
     private boolean remember_passwd;
     private SharedPreferences prefs;
-    private boolean firstTime = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        if (firstTime)
-            init();
+        init();
 
     }
 
@@ -50,7 +48,6 @@ public class LoginActivity extends AppCompatActivity {
         if (remember_userid) tvUserid.setText(prefs.getString(PREF_USERID, ""));
         if (remember_passwd) tvPasswd.setText(prefs.getString(PREF_PASSWD,""));
 
-        firstTime = false;
     }
 
     @OnClick(R.id.btnLogin)
