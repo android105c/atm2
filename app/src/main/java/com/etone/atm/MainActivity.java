@@ -8,15 +8,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnItemSelected;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getName();
     private static final int FUNC_LOGIN = 6;
 
     @BindView(R.id.list) ListView list;
+    @BindView(R.id.spinner) Spinner spinner;
 
     private static boolean logon = false;
 
@@ -30,10 +33,22 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(new Intent(this, LoginActivity.class), FUNC_LOGIN);
 
         }
-        String[] data = {"餘額查詢", "交易明細", "最新消息", "投資理財", "離開"};
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, data);
+        String[] func = {"餘額查詢", "交易明細", "最新消息", "投資理財", "離開"};
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, func);
         list.setAdapter(adapter);
+
+/*
+        String[] data = getResources().getStringArray(R.array.notify_array);
+        ArrayAdapter adapter2 = new ArrayAdapter(this, android.R.layout.simple_list_item_1, data);
+*/
+        ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this,R.array.notify_array, android.R.layout.simple_list_item_1);
+        spinner.setAdapter(adapter2);
     }
+
+    @OnItemSelected(R.id.spinner) void selected(){
+
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -46,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
         }
-
     }
 
     @Override
@@ -73,4 +87,6 @@ public class MainActivity extends AppCompatActivity {
         // default --> return false;
         return super.onOptionsItemSelected(item);
     }
+
+
 }
