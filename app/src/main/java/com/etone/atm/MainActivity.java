@@ -21,12 +21,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
-    private static final int FUNC_BALANCE = 0;
-    private static final int FUNC_HISTORY = 1;
-    private static final int FUNC_NEWS = 2;
-    private static final int FUNC_FINANCE = 3;
-    private static final int FUNC_EXIT = 4;
-
     private final String TAG = this.getClass().getName();
     private static final int FUNC_LOGIN = 6;
 
@@ -124,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long itemId) {
         switch (parent.getId()){
             case R.id.list:
 
@@ -132,22 +126,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             case R.id.gridView:
                 Log.d("grid view", position + "/");
-                switch (position){
-                    case FUNC_BALANCE:
+                switch ((int) itemId){
+                    case R.drawable.func_balance:
                         break;
-                    case FUNC_HISTORY:
+                    case R.drawable.func_history:
                         break;
-                    case FUNC_NEWS:
+                    case R.drawable.func_news:
                         break;
-                    case FUNC_FINANCE:
+                    case R.drawable.func_finance:
+                        startActivity(new Intent(this, FinanceActivity.class));
                         break;
-                    case FUNC_EXIT:
+                    case R.drawable.func_exit:
                         finish();
                         break;
                 }
-
-
-
                 break;
         }
     }
@@ -166,25 +158,34 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         @Override
         public long getItemId(int position) {
-            return position;
+            return icons[position];
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View view = convertView;
+            ViewHolder viewHolder;
             if (view == null){
                 view = getLayoutInflater().inflate(R.layout.icon,null);
-                TextView tv = (TextView) view.findViewById(R.id.icon_text);
-                ImageView iv = (ImageView) view.findViewById(R.id.icon_image);
-
-                tv.setText(func[position]);
-                iv.setImageResource(icons[position]);
-
-                convertView = view;
+                viewHolder = new ViewHolder(view);
+                view.setTag(viewHolder);
+            }else{
+                viewHolder = (ViewHolder) view.getTag();
             }
+            viewHolder.tv.setText(func[position]);
+            viewHolder.iv.setImageResource(icons[position]);
 
-            return convertView;
+            return view;
         }
+    }
+
+    class ViewHolder{
+        @BindView(R.id.icon_image) ImageView iv;
+        @BindView(R.id.icon_text) TextView tv;
+        public ViewHolder(View view){
+            ButterKnife.bind(this, view);
+        }
+
     }
 
 
