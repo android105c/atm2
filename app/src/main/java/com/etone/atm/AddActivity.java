@@ -3,7 +3,9 @@ package com.etone.atm;
 import android.content.ContentValues;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +23,7 @@ public class AddActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add);
         ButterKnife.bind(this);
 
-        dbHelper = new MyDBHelper(this);
+        dbHelper = MyDBHelper.getInstance(this);
     }
 
     @OnClick(R.id.btn_add) void add(){
@@ -34,7 +36,11 @@ public class AddActivity extends AppCompatActivity {
         values.put("info", info);
         values.put("amount", amount);
 
-        dbHelper.getWritableDatabase().insert("exp",null, values);
+        long id = dbHelper.getWritableDatabase().insert("exp",null, values);
+        Log.i("add", id+"");
+        if (id != -1){
+            Toast.makeText(this, "新增成功", Toast.LENGTH_LONG).show();
+        }
 
     }
 }
