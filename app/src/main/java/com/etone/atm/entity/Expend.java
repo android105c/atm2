@@ -1,6 +1,9 @@
-package com.etone.atm;
+package com.etone.atm.entity;
 
 import android.content.ContentValues;
+
+import com.etone.atm.DAO.ExpendDAO;
+import com.etone.atm.Utils.Utils;
 
 import java.util.Date;
 
@@ -18,7 +21,6 @@ public class Expend {
     int amount;
 
     public Expend(String cdate, String info, int amount) {
-
         this.amount = amount;
         this.date = Utils.stringToDate(cdate);
         this.info = info;

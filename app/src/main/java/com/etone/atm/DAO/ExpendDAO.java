@@ -1,9 +1,13 @@
-package com.etone.atm;
+package com.etone.atm.DAO;
+
+import com.etone.atm.Utils.MyApplication;
+import com.etone.atm.Utils.MyDBHelper;
+import com.etone.atm.entity.Expend;
 
 /**
  * Created by Maggie on 2016/5/13.
  */
-public class ExpendDAO {
+public class ExpendDAO  {
 
     private static final String TABLE_NAME = "exp";
     public static final String FIELD_ID = "_id";

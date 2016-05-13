@@ -12,6 +12,8 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import com.etone.atm.Utils.MyDBHelper;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

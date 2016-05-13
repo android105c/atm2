@@ -1,4 +1,4 @@
-package com.etone.atm;
+package com.etone.atm.Utils;
 
 import android.app.Application;
 import android.content.Context;

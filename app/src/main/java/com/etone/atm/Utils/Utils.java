@@ -1,4 +1,4 @@
-package com.etone.atm;
+package com.etone.atm.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
