@@ -16,7 +16,7 @@ public class ExpendDAO  {
     public static final String FIELD_AMOUNT = "amount";
 
     public static int insert(Expend expend) {
-        return (int) MyDBHelper.getInstance(MyApplication.context).getWritableDatabase().insert(TABLE_NAME, null, expend.getContentValues());
+        return (int) MyDBHelper.getInstance(MyApplication.getContext()).getWritableDatabase().insert(TABLE_NAME, null, expend.getContentValues());
 
     }
 }

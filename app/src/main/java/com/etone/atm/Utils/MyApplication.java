@@ -7,7 +7,11 @@ import android.content.Context;
  * Created by Maggie on 2016/5/13.
  */
 public class MyApplication extends Application {
-    public static Context context;
+    private static Context context = null;
+
+    public static Context getContext(){
+        return context;
+    }
 
     @Override
     public void onCreate() {
