@@ -22,9 +22,9 @@
         android:id="@+id/list"
         android:visibility="gone" />
 
-    <GridView
+    <com.etone.atm.MyGridView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/gridView"
-        android:numColumns="3" />
+        android:numColumns="1" />
 </LinearLayout>

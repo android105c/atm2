@@ -1,9 +1,7 @@
 package com.etone.atm;
 
-import android.content.ContentValues;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,7 +13,7 @@ public class AddActivity extends AppCompatActivity {
     @BindView(R.id.ed_date) EditText edDate;
     @BindView(R.id.ed_info) EditText edInfo;
     @BindView(R.id.ed_amount) EditText edAmount;
-    private MyDBHelper dbHelper;
+//    private MyDBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +21,7 @@ public class AddActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add);
         ButterKnife.bind(this);
 
-        dbHelper = MyDBHelper.getInstance(this);
+//        dbHelper = MyDBHelper.getInstance(this);
     }
 
     @OnClick(R.id.btn_add) void add(){
@@ -31,6 +29,9 @@ public class AddActivity extends AppCompatActivity {
         String info = edInfo.getText().toString();
         int amount = Integer.parseInt(edAmount.getText().toString());
 
+        Expend expend = new Expend(cdate, info, amount);
+        int id = ExpendDAO.insert(expend);
+/*
         ContentValues values = new ContentValues();
         values.put("cdate", cdate);
         values.put("info", info);
@@ -38,6 +39,7 @@ public class AddActivity extends AppCompatActivity {
 
         long id = dbHelper.getWritableDatabase().insert("exp",null, values);
         Log.i("add", id+"");
+*/
         if (id != -1){
             Toast.makeText(this, "新增成功", Toast.LENGTH_LONG).show();
         }

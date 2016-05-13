@@ -3,11 +3,8 @@ package com.etone.atm;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -17,38 +14,30 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class FinanceActivity extends AppCompatActivity {
     @BindView(R.id.list) ListView list;
-    private MyDBHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finance);
         ButterKnife.bind(this);
-        helper = MyDBHelper.getInstance(this);
+
         setupListView();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(FinanceActivity.this, AddActivity.class));
+    }
 
-                /*
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                        */
-            }
-        });
+    @OnClick(R.id.fab) void onClick(View view){
+        startActivity(new Intent(FinanceActivity.this, AddActivity.class));
     }
 
     private void setupListView() {
-        Cursor c = helper.getReadableDatabase().query("exp", null, null, null, null, null, null);
+        Cursor c = MyDBHelper.getInstance(this).getReadableDatabase().query("exp", null, null, null, null, null, null);
         String[] from = {"_id", "cdate", "info", "amount"};
         int[] to = {R.id.text_id, R.id.text_cdate, R.id.text_info, R.id.text_amount};
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
