@@ -3,10 +3,17 @@ package com.etone.atm;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +61,19 @@ public class LoginActivity extends AppCompatActivity {
     void login(){
         String userid = tvUserid.getText().toString();
         String passwd = tvPasswd.getText().toString();
+
+        try {
+            URL url = new URL("http://atm201605.appspot.com/login?uid=" + userid + "&pw=" + passwd);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            InputStream is = conn.getInputStream();
+            int i = is.read();
+            Log.d("http", i+"");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         if (userid.equals("jack") && passwd.equals("1234")){
 
