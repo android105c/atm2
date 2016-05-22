@@ -22,6 +22,7 @@ public class Expend {
 
     public Expend(String cdate, String info, int amount) {
         this.amount = amount;
+
         this.date = Utils.stringToDate(cdate);
         this.info = info;
     }

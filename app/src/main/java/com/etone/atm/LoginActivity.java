@@ -1,17 +1,19 @@
 package com.etone.atm;
 
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -30,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.txtPasswd) TextView tvPasswd;
     @BindView(R.id.cbRememberUserid) CheckBox cbUsersid;
     @BindView(R.id.cbRememberPasswd) CheckBox cbPasswd;
+    @BindView(R.id.progressBar) ProgressBar pb;
 
     private boolean remember_userid;
     private boolean remember_passwd;
@@ -61,50 +64,8 @@ public class LoginActivity extends AppCompatActivity {
     void login(){
         String userid = tvUserid.getText().toString();
         String passwd = tvPasswd.getText().toString();
+        new LoginTask().execute(userid, passwd);
 
-        try {
-            URL url = new URL("http://atm201605.appspot.com/login?uid=" + userid + "&pw=" + passwd);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            InputStream is = conn.getInputStream();
-            int i = is.read();
-            Log.d("http", i+"");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        if (userid.equals("jack") && passwd.equals("1234")){
-
-            //  Remember userid / password start
-            SharedPreferences.Editor editor = prefs.edit();
-            boolean isChange = false;
-            if (remember_userid) {
-                editor.putString(PREF_USERID, userid);
-                isChange = true;
-            }else{
-                editor.remove(PREF_USERID);
-            }
-
-            if (remember_passwd) {
-                editor.putString(PREF_PASSWD, passwd);
-                isChange = true;
-            }else{
-                editor.remove(PREF_PASSWD);
-            }
-
-            if(isChange) editor.commit();
-            // Remember userid / password end
-
-            Toast.makeText(this, "登入成功", Toast.LENGTH_LONG).show();
-
-            setResult(RESULT_OK);
-            finish();
-
-        }else{
-            Toast.makeText(this, "登入失敗", Toast.LENGTH_LONG).show();
-        }
     }
 
     @OnCheckedChanged({R.id.cbRememberUserid, R.id.cbRememberPasswd})
@@ -123,6 +84,76 @@ public class LoginActivity extends AppCompatActivity {
                 break;
         }
         prefs.edit().putBoolean(pref, isChecked).commit();
+    }
+
+
+    class LoginTask extends AsyncTask<String, Void, Integer>{
+        String userid;
+        String passwd;
+        @Override
+        protected Integer doInBackground(String... params) {
+            userid = params[0];
+            passwd = params[1];
+            String str_url = "http://atm201605.appspot.com/login?uid=" + userid + "&pw=" + passwd;
+            int data = 0;
+            try {
+                URL url = new URL(str_url);
+                InputStream is = url.openStream();
+                data = is.read();
+                Thread.sleep(2000);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return data;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            pb.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            pb.setVisibility(View.GONE);
+            if (integer==49){
+
+                //  Remember userid / password start
+                SharedPreferences.Editor editor = prefs.edit();
+                boolean isChange = false;
+                if (remember_userid) {
+                    editor.putString(PREF_USERID, userid);
+                    isChange = true;
+                }else{
+                    editor.remove(PREF_USERID);
+                }
+
+                if (remember_passwd) {
+                    editor.putString(PREF_PASSWD, passwd);
+                    isChange = true;
+                }else{
+                    editor.remove(PREF_PASSWD);
+                }
+
+                if(isChange) editor.commit();
+                // Remember userid / password end
+
+                Toast.makeText(LoginActivity.this, "登入成功", Toast.LENGTH_LONG)
+                        .show();
+
+                setResult(RESULT_OK);
+                finish();
+
+            }else{
+                new AlertDialog.Builder(LoginActivity.this)
+                        .setMessage("登入失敗")
+                        .setPositiveButton("OK", null)
+                        .show();
+            }
+        }
     }
 
 }
